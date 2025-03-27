@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:forceDarkAllowed="false"
+    tools:context=".ui.theme.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#577C8C"
+        android:orientation="vertical"
+        android:paddingVertical="10dp">
+
+        <ImageView
+            android:id="@+id/logoImage"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:src="@drawable/dodoicon" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#FFFFFF"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/registerTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Regisztráció"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:layout_marginVertical="30dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/usernameInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="Felhasználónév"
+            android:textColor="#000000"
+            android:textColorHint="#808080"
+            android:background="@drawable/rounded_input"
+            android:padding="12dp" />
+
+        <EditText
+            android:id="@+id/emailInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="Email"
+            android:textColor="#000000"
+            android:textColorHint="#808080"
+            android:background="@drawable/rounded_input"
+            android:padding="12dp" />
+
+        <EditText
+            android:id="@+id/passwordInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="Jelszó"
+            android:inputType="textPassword"
+            android:textColor="#000000"
+            android:textColorHint="#808080"
+            android:background="@drawable/rounded_input"
+            android:padding="12dp" />
+
+        <EditText
+            android:id="@+id/secondPasswordInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="Jelszó megerősítése"
+            android:inputType="textPassword"
+            android:textColor="#000000"
+            android:textColorHint="#808080"
+            android:background="@drawable/rounded_input"
+            android:padding="12dp" />
+
+        <TextView
+            android:id="@+id/loginText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingLeft="5dp"
+            android:text="Már regisztráltál? Jelentkezz be!"
+            android:textSize="14sp"
+            android:textColor="#577C8C" />
+
+        <Button
+            android:id="@+id/registerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/rounded_button"
+            android:padding="20dp"
+            android:text="Regisztráció"
+            android:textColor="#FEDB3F" />
+    </LinearLayout>
+</LinearLayout>
