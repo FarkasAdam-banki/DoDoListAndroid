@@ -70,7 +70,14 @@ class MainActivity : AppCompatActivity() {
                         if (loginResponse.error != null) {
                             Toast.makeText(this@MainActivity, loginResponse.error, Toast.LENGTH_SHORT).show()
                         } else {
-                            Toast.makeText(this@MainActivity, loginResponse.message ?: "Sikeres bejelentkezés!", Toast.LENGTH_SHORT).show()
+                            val sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE)
+                            val editor = sharedPreferences.edit()
+                            editor.putString("user_username", username)
+                            editor.apply()
+
+                            Toast.makeText(this@MainActivity, "Sikeres bejelentkezés!", Toast.LENGTH_SHORT).show()
+
+                            startActivity(intent)
                         }
                     }
                 } else {

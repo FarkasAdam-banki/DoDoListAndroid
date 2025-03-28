@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff"
+    android:padding="16dp"
+
+    >
+
+    <TextView
+        android:id="@+id/taskTitleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Boltba menni"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        />
+    <TextView
+        android:id="@+id/deadlineTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Határidő: 2024/01/06"
+        android:textColor="#555"
+        android:textSize="12sp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/taskTitleTextView"
+        android:layout_marginTop="4dp"/>
+
+    <TextView
+        android:id="@+id/subTaskTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alfeladatok száma: "
+        android:textColor="#555"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@id/deadlineTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="4dp"/>
+
+    <TextView
+        android:id="@+id/collaboratorsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Megosztvа: Peltike, Erzséke +2"
+        android:textColor="#555"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@id/subTaskTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="4dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
