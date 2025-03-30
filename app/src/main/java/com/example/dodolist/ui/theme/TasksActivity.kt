@@ -2,6 +2,7 @@ package com.example.dodolist.ui.theme
 import Model.Task
 import TaskAdapter
 import TaskService
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -14,10 +15,11 @@ import retrofit2.Response
 import com.example.dodolist.R
 import com.example.dodolist.network.RetrofitClient
 import com.example.dodolist.ui.theme.JwtUtils
+import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class TaskActivity : AppCompatActivity() {
+class TasksActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var taskAdapter: TaskAdapter
@@ -29,13 +31,22 @@ class TaskActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        taskAdapter = TaskAdapter(emptyList())
+        taskAdapter = TaskAdapter(emptyList()) { task ->
+            val intent = Intent(this, TaskSettingsActivity::class.java)
+            intent.putExtra("TASK_ID", task.feladat_id)
+            startActivity(intent)
+        }
         recyclerView.adapter = taskAdapter
+
+        val gson = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd HH:mm:ss")
+            .create()
 
         val retrofit = Retrofit.Builder()
             .baseUrl("https://dodolist.hu/")
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
+
 
         taskService = retrofit.create(TaskService::class.java)
 
@@ -61,13 +72,13 @@ class TaskActivity : AppCompatActivity() {
                         taskAdapter.updateTasks(taskList)
                     }
                 } else {
-                    Toast.makeText(this@TaskActivity, "Hiba történt!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@TasksActivity, "Hiba történt!", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<List<Task>>, t: Throwable) {
                 Log.e("TaskActivity", "API hiba: ${t.message}")
-                Toast.makeText(this@TaskActivity, "Sikertelen kapcsolat!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@TasksActivity, "Sikertelen kapcsolat!", Toast.LENGTH_SHORT).show()
             }
         })
     }

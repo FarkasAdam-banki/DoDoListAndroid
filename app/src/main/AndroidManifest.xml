@@ -15,16 +15,16 @@
         android:theme="@style/Theme.AppCompat"
         tools:targetApi="31">
         <activity
+            android:name=".ui.theme.TasksActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.theme.TaskSettingsActivity"
             android:exported="false" />
         <activity
             android:name=".ui.theme.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.theme.TaskSettings"
-            android:exported="false" />
-        <activity
-            android:name=".ui.theme.MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

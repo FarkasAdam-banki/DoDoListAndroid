@@ -11,6 +11,7 @@ import com.example.dodolist.model.RegisterData
 import com.example.dodolist.model.RegisterResponse
 import com.example.dodolist.network.RegisterService
 import com.example.dodolist.R
+import com.example.dodolist.ui.MainActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
