@@ -5,7 +5,11 @@ import TaskService
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +19,7 @@ import retrofit2.Response
 import com.example.dodolist.R
 import com.example.dodolist.network.RetrofitClient
 import com.example.dodolist.ui.theme.JwtUtils
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -28,6 +33,13 @@ class TasksActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_blockview)
+
+
+
+        val fabAdd: FloatingActionButton = findViewById(R.id.fab_add)
+        fabAdd.setOnClickListener {
+            showAddTaskDialog()
+        }
 
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -63,6 +75,61 @@ class TasksActivity : AppCompatActivity() {
         }
 
     }
+
+    private fun showAddTaskDialog() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_task, null)
+        val editTextTaskName = dialogView.findViewById<EditText>(R.id.editTextTaskName)
+        val buttonCreateTask = dialogView.findViewById<Button>(R.id.buttonCreateTask)
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        buttonCreateTask.setOnClickListener {
+            val taskName = editTextTaskName.text.toString().trim()
+            if (taskName.isNotEmpty()) {
+                val authToken = RetrofitClient.getCookieJar().getAuthToken()
+                if (authToken != null) {
+                    val email = JwtUtils.decodeJwt(authToken)
+                    if (email != null) {
+                        createTask(taskName, email, dialog)
+                    } else {
+                        Toast.makeText(this, "Hiba: Nem sikerült dekódolni az e-mailt.", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this, "Hiba: Nincs auth token.", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this, "Adj meg egy feladatnevet!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun createTask(taskName: String, email: String, dialog: AlertDialog) {
+        val taskData: Map<String, String> = mapOf(
+            "feladat_nev" to taskName,
+            "felhasznalo_email" to email
+        )
+
+        taskService.createTask(taskData).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(this@TasksActivity, "Feladat létrehozva: $taskName", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                    fetchTasks(email)
+                } else {
+                    Toast.makeText(this@TasksActivity, "Hiba történt a feladat létrehozásakor!", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Toast.makeText(this@TasksActivity, "Sikertelen kapcsolat!", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
 
     private fun fetchTasks(email: String) {
         taskService.getUserTasks(email).enqueue(object : Callback<List<Task>> {
