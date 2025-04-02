@@ -1,6 +1,7 @@
 package com.example.dodolist.network
 
 import TaskService
+import service.LogService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import okhttp3.OkHttpClient
@@ -12,21 +13,24 @@ object RetrofitClient {
         .cookieJar(cookieJar)
         .build()
 
-    val instance: LoginService by lazy {
+    private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl("https://dodolist.hu/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
-            .create(LoginService::class.java)
     }
+
+    val instance: LoginService by lazy {
+        retrofit.create(LoginService::class.java)
+    }
+
     val taskService: TaskService by lazy {
-        Retrofit.Builder()
-            .baseUrl("https://dodolist.hu/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(client)
-            .build()
-            .create(TaskService::class.java)
+        retrofit.create(TaskService::class.java)
+    }
+
+    val logService: LogService by lazy {
+        retrofit.create(LogService::class.java)
     }
 
     fun getCookieJar(): CustomCookieJar {

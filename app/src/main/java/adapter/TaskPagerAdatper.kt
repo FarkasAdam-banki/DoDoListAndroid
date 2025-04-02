@@ -30,7 +30,12 @@ class TaskPagerAdapter(activity: FragmentActivity, private val taskDetails: Task
             }
             2 -> SubTasksFragment()
             3 -> ShareFragment()
-            4 -> LogFragment()
+            4 -> LogFragment().apply {
+                val bundle = Bundle().apply {
+                    putInt("TASK_ID", taskDetails?.feladat_id ?: -1)
+                }
+                arguments = bundle
+            }
             else -> TaskSettingsFragment()
         }
     }
