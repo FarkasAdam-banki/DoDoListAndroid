@@ -17,6 +17,8 @@ class TaskAdapter(private var tasks: List<Task>, private val onItemClick: (Task)
         val deadlineTextView: TextView = view.findViewById(R.id.deadlineTextView)
         val subTaskTextView: TextView = view.findViewById(R.id.subTaskTextView)
         val collaboratorsTextView: TextView = view.findViewById(R.id.collaboratorsTextView)
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {

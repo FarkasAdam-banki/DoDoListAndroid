@@ -24,7 +24,7 @@ import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class TasksActivity : AppCompatActivity() {
+class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedListener {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var taskAdapter: TaskAdapter
@@ -73,6 +73,8 @@ class TasksActivity : AppCompatActivity() {
         } else {
             Log.e("JWT", "Nincs auth_token a sütiben.")
         }
+        val fragment = supportFragmentManager.findFragmentByTag(TaskSettingsFragment::class.java.simpleName) as? TaskSettingsFragment
+        fragment?.listener = this
 
     }
 
@@ -129,6 +131,17 @@ class TasksActivity : AppCompatActivity() {
             }
         })
     }
+    override fun onTaskDeleted(taskId: Int) {
+        val authToken = RetrofitClient.getCookieJar().getAuthToken()
+        if (authToken != null) {
+            val email = JwtUtils.decodeJwt(authToken)
+            if (email != null) {
+                fetchTasks(email)
+            } else {
+                Toast.makeText(this, "Hiba: Nem sikerült dekódolni az e-mailt.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
 
     private fun fetchTasks(email: String) {
@@ -136,8 +149,7 @@ class TasksActivity : AppCompatActivity() {
             override fun onResponse(call: Call<List<Task>>, response: Response<List<Task>>) {
                 if (response.isSuccessful) {
                     response.body()?.let { taskList ->
-                        taskAdapter.updateTasks(taskList)
-                    }
+                        taskAdapter.updateTasks(taskList)                    }
                 } else {
                     Toast.makeText(this@TasksActivity, "Hiba történt!", Toast.LENGTH_SHORT).show()
                 }

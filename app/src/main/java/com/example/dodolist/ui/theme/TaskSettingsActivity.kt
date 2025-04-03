@@ -16,7 +16,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class TaskSettingsActivity : AppCompatActivity() {
+class TaskSettingsActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedListener {
 
     private lateinit var taskService: TaskService
     private var taskDetails: TaskDetails? = null
@@ -68,6 +68,11 @@ class TaskSettingsActivity : AppCompatActivity() {
                 Toast.makeText(this@TaskSettingsActivity, "Nem sikerült lekérni az adatokat!", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    override fun onTaskDeleted(taskId: Int) {
+        Toast.makeText(this, "Feladat törölve!", Toast.LENGTH_SHORT).show()
+        finish()
     }
 }
 

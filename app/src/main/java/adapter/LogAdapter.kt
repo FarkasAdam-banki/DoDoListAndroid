@@ -39,8 +39,6 @@ class LogAdapter(private var logs: List<LogEntry>) : RecyclerView.Adapter<LogAda
         fun bind(log: LogEntry) {
             logMessage.text = "Mező: ${log.mezo_nev} módosítva"
             logTimestamp.text = log.modositas_datuma
-
-            // Handle color changes
             if (log.mezo_nev == "feladat_szin") {
                 colorCircle.visibility = View.VISIBLE
                 colorCircle.setBackgroundColor(android.graphics.Color.parseColor(log.uj_ertek))
@@ -48,11 +46,10 @@ class LogAdapter(private var logs: List<LogEntry>) : RecyclerView.Adapter<LogAda
                 colorCircle.visibility = View.GONE
             }
 
-            // Handle status changes
             if (log.mezo_nev == "allapot_id") {
                 statusBadge.visibility = View.VISIBLE
                 statusBadge.text = getStatusLabel(log.uj_ertek)
-                statusBadge.setBackgroundColor(getStatusColorClass(log.uj_ertek)) // Assuming this is the color for the new status
+                statusBadge.setBackgroundColor(getStatusColorClass(log.uj_ertek))
             } else {
                 statusBadge.visibility = View.GONE
             }

@@ -1,7 +1,9 @@
+import Model.DeleteTaskResponse
 import Model.Task
 import Model.TaskDetails
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -17,4 +19,6 @@ interface TaskService {
     @POST("dodo/task.php")
     fun createTask(@Body taskData: Map<String, String>): Call<Void>
 
+    @DELETE("dodo/task.php")
+    fun deleteTask(@Query("taskId") taskId: Int): Call<DeleteTaskResponse>
 }
