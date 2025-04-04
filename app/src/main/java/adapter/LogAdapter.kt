@@ -35,22 +35,38 @@ class LogAdapter(private var logs: List<LogEntry>) : RecyclerView.Adapter<LogAda
         private val logTimestamp: TextView = itemView.findViewById(R.id.logTimestamp)
         private val colorCircle: ImageView = itemView.findViewById(R.id.colorCircle)
         private val statusBadge: TextView = itemView.findViewById(R.id.statusBadge)
+        private val logText : TextView = itemView.findViewById(R.id.logText)
+        private val newValue : TextView = itemView.findViewById(R.id.newValue)
 
         fun bind(log: LogEntry) {
-            logMessage.text = "Mező: ${log.mezo_nev} módosítva"
+            logMessage.text = when (log.mezo_nev) {
+                "feladat_hatarido" -> "Határidő módosítva"
+                "feladat_szin" -> "Szín módosítva"
+                "feladat_nev" -> "Feladat név módosítva"
+                "feladat_leiras" -> "Feladat leírása módosítva"
+                "allapot_id" -> "Állapot módosítva"
+                else -> "${log.mezo_nev} módosítva"
+            }
+
             logTimestamp.text = log.modositas_datuma
             if (log.mezo_nev == "feladat_szin") {
                 colorCircle.visibility = View.VISIBLE
                 colorCircle.setBackgroundColor(android.graphics.Color.parseColor(log.uj_ertek))
-            } else {
-                colorCircle.visibility = View.GONE
-            }
-
-            if (log.mezo_nev == "allapot_id") {
+                newValue.text = "Új szín:"
+                statusBadge.visibility = View.GONE
+                logText.visibility = View.GONE
+            }else if(log.mezo_nev == "allapot_id"){
                 statusBadge.visibility = View.VISIBLE
                 statusBadge.text = getStatusLabel(log.uj_ertek)
+                newValue.text = "új állapot:"
                 statusBadge.setBackgroundColor(getStatusColorClass(log.uj_ertek))
-            } else {
+                colorCircle.visibility = View.GONE
+                logText.visibility = View.GONE
+            }else{
+                logText.visibility = View.VISIBLE
+                logText.text = log.uj_ertek
+                newValue.text = "Új érték:"
+                colorCircle.visibility = View.GONE
                 statusBadge.visibility = View.GONE
             }
         }
