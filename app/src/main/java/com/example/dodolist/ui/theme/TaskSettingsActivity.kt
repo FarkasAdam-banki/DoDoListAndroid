@@ -3,6 +3,7 @@ package com.example.dodolist.ui.theme
 import Model.TaskDetails
 import TaskService
 import adapter.TaskPagerAdapter
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -71,7 +72,10 @@ class TaskSettingsActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDele
     }
 
     override fun onTaskDeleted(taskId: Int) {
-        Toast.makeText(this, "Feladat törölve!", Toast.LENGTH_SHORT).show()
+        val resultIntent = Intent()
+        resultIntent.putExtra("DELETED_TASK_ID", taskId)
+        setResult(RESULT_OK, resultIntent)
+
         finish()
     }
 }

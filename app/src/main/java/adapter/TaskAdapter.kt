@@ -55,4 +55,9 @@ class TaskAdapter(private var tasks: List<Task>, private val onItemClick: (Task)
         tasks = newTasks
         notifyDataSetChanged()
     }
+    fun removeTaskById(taskId: Int) {
+        tasks = tasks.filter { it.feladat_id != taskId }
+        notifyDataSetChanged()
+    }
+
 }

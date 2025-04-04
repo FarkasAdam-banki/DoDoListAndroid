@@ -28,7 +28,6 @@ class TaskSettingsFragment : Fragment() {
         fun onTaskDeleted(taskId: Int)
     }
 
-
     var listener: OnTaskDeletedListener? = null
 
     override fun onAttach(context: Context) {
@@ -129,7 +128,6 @@ class TaskSettingsFragment : Fragment() {
                 if (response.isSuccessful) {
                     val result = response.body()
                     if (result?.success != null) {
-                        Toast.makeText(requireContext(), "Feladat törölve", Toast.LENGTH_SHORT).show()
                         listener?.onTaskDeleted(taskId)
                         requireActivity().setResult(AppCompatActivity.RESULT_OK)
                         requireActivity().finish()

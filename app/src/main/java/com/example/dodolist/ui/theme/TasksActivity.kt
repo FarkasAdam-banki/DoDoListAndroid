@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,12 +31,24 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
     private lateinit var recyclerView: RecyclerView
     private lateinit var taskAdapter: TaskAdapter
     private lateinit var taskService: TaskService
+    private lateinit var launcher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_blockview)
 
+        val fragment = supportFragmentManager.findFragmentByTag(TaskSettingsFragment::class.java.simpleName) as? TaskSettingsFragment
+        fragment?.listener = this
 
+        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val deletedId = result.data?.getIntExtra("DELETED_TASK_ID", -1) ?: -1
+                if (deletedId != -1) {
+                    Log.d("TasksActivity", "ActivityResult: taskId = $deletedId")
+                    onTaskDeleted(deletedId)
+                }
+            }
+        }
 
         val fabAdd: FloatingActionButton = findViewById(R.id.fab_add)
         fabAdd.setOnClickListener {
@@ -46,7 +60,7 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
         taskAdapter = TaskAdapter(emptyList()) { task ->
             val intent = Intent(this, TaskSettingsActivity::class.java)
             intent.putExtra("TASK_ID", task.feladat_id)
-            startActivity(intent)
+            launcher.launch(intent)
         }
         recyclerView.adapter = taskAdapter
 
@@ -73,8 +87,6 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
         } else {
             Log.e("JWT", "Nincs auth_token a sütiben.")
         }
-        val fragment = supportFragmentManager.findFragmentByTag(TaskSettingsFragment::class.java.simpleName) as? TaskSettingsFragment
-        fragment?.listener = this
 
     }
 
@@ -132,16 +144,10 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
         })
     }
     override fun onTaskDeleted(taskId: Int) {
-        val authToken = RetrofitClient.getCookieJar().getAuthToken()
-        if (authToken != null) {
-            val email = JwtUtils.decodeJwt(authToken)
-            if (email != null) {
-                fetchTasks(email)
-            } else {
-                Toast.makeText(this, "Hiba: Nem sikerült dekódolni az e-mailt.", Toast.LENGTH_SHORT).show()
-            }
-        }
+        taskAdapter.removeTaskById(taskId)
+        Toast.makeText(this, "Feladat Törölve!", Toast.LENGTH_SHORT).show()
     }
+
 
 
     private fun fetchTasks(email: String) {
