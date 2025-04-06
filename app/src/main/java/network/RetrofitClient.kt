@@ -2,6 +2,7 @@ package com.example.dodolist.network
 
 import TaskService
 import service.LogService
+import Network.InvitationService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import okhttp3.OkHttpClient
@@ -31,6 +32,11 @@ object RetrofitClient {
 
     val logService: LogService by lazy {
         retrofit.create(LogService::class.java)
+    }
+
+
+    val invitationService: InvitationService by lazy {
+        retrofit.create(InvitationService::class.java)
     }
 
     fun getCookieJar(): CustomCookieJar {

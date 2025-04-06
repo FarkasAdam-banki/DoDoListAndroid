@@ -1,4 +1,9 @@
 package com.example.dodolist.ui.theme
+import InvitationAdapter
+import Model.Invitation
+import Model.InvitationListResponse
+import Model.InvitationRequest
+import Model.InvitationResponse
 import Model.Task
 import TaskAdapter
 import TaskService
@@ -20,9 +25,13 @@ import retrofit2.Callback
 import retrofit2.Response
 import com.example.dodolist.R
 import com.example.dodolist.network.RetrofitClient
+import com.example.dodolist.network.RetrofitClient.invitationService
 import com.example.dodolist.ui.theme.JwtUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -32,6 +41,9 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
     private lateinit var taskAdapter: TaskAdapter
     private lateinit var taskService: TaskService
     private lateinit var launcher: ActivityResultLauncher<Intent>
+    private lateinit var invitationAdapter: InvitationAdapter
+    private lateinit var recyclerViewInvitations: RecyclerView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +90,7 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
 
         val authToken = RetrofitClient.getCookieJar().getAuthToken()
         if (authToken != null) {
-            val email = JwtUtils.decodeJwt(authToken)
+            var email = JwtUtils.decodeJwt(authToken)
             if (email != null) {
                 fetchTasks(email)
             } else {
@@ -88,7 +100,87 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
             Log.e("JWT", "Nincs auth_token a sütiben.")
         }
 
+        recyclerViewInvitations = findViewById(R.id.recyclerViewInvitations)
+        recyclerViewInvitations.layoutManager = LinearLayoutManager(this)
+
+        invitationAdapter = InvitationAdapter(emptyList(),
+            onAccept = { invitation -> handleInvitation(invitation, "accept") },
+            onReject = { invitation -> handleInvitation(invitation, "reject") }
+        )
+        recyclerViewInvitations.adapter = invitationAdapter
+
+        fetchInvitations()
+
+
     }
+    private fun fetchInvitations() {
+        val authToken = RetrofitClient.getCookieJar().getAuthToken()
+        if (authToken != null) {
+            val email = JwtUtils.decodeJwt(authToken)
+            if (email != null) {
+                RetrofitClient.invitationService.checkInvites(email)
+                    .enqueue(object : Callback<List<Invitation>> {
+                        override fun onResponse(
+                            call: Call<List<Invitation>>,
+                            response: Response<List<Invitation>>
+                        ) {
+                            if (response.isSuccessful) {
+                                val invites = response.body()
+
+                                runOnUiThread {
+                                    invitationAdapter.updateInvites(invites ?: emptyList())
+                                }
+                            } else {
+                                Log.e("Invitations", "Hibás válasz: ${response.code()}")
+                            }
+                        }
+
+                        override fun onFailure(call: Call<List<Invitation>>, t: Throwable) {
+                            Log.e("Invitations", "Hálózati hiba: ${t.message}")
+                        }
+                    })
+            } else {
+                Log.e("JWT", "Nem sikerült dekódolni az emailt.")
+            }
+        } else {
+            Log.e("JWT", "Nincs auth_token a sütiben.")
+        }
+    }
+
+
+
+
+    private fun handleInvitation(invitation: Invitation, action: String) {
+        val authToken = RetrofitClient.getCookieJar().getAuthToken()
+        val email = authToken?.let { JwtUtils.decodeJwt(it) }
+        if (email == null) {
+            Log.e("InvitationAction", "Email nem található!")
+            return
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val request = InvitationRequest(
+                    action = action,
+                    feladat_id = invitation.feladat_id,
+                    email = email
+                )
+                val response = when (action) {
+                    "accept" -> RetrofitClient.invitationService.acceptInvite(request)
+                    "reject" -> RetrofitClient.invitationService.rejectInvite(request)
+                    else -> null
+                }
+
+                if (response?.isSuccessful == true) {
+                    fetchInvitations()
+                    fetchTasks(email);
+                }
+
+            } catch (e: Exception) {
+                Log.e("InvitationAction", "Hiba: ${e.message}")
+            }
+        }
+    }
+
 
     private fun showAddTaskDialog() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_task, null)
