@@ -2,6 +2,8 @@ package com.example.dodolist.ui.theme
 
 import Model.DeleteTaskResponse
 import Model.TaskDetails
+import Model.UpdateTaskRequest
+import Model.UpdateTaskResponse
 import adapter.StatusAdapter
 import android.app.AlertDialog
 import android.content.Context
@@ -22,6 +24,8 @@ import com.google.android.material.textfield.TextInputEditText
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
+
 
 class TaskSettingsFragment : Fragment() {
     interface OnTaskDeletedListener {
@@ -44,7 +48,6 @@ class TaskSettingsFragment : Fragment() {
         listener = null
     }
 
-
     private lateinit var taskNameEditText: TextInputEditText
     private lateinit var dateEditText: TextInputEditText
     private lateinit var timeEditText: TextInputEditText
@@ -52,6 +55,10 @@ class TaskSettingsFragment : Fragment() {
     private lateinit var titleTextView: TextView
     private lateinit var deleteTaskButton: TextView
     private var taskId: Int? = null
+    private var userEmail: String? = null
+    private var originalTaskName: String = ""
+    private var originalDate: String = ""
+    private var originalTime: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -64,7 +71,7 @@ class TaskSettingsFragment : Fragment() {
         statusSpinner = view.findViewById(R.id.statusSpinner)
         titleTextView = view.findViewById(R.id.titleTextView)
         deleteTaskButton = view.findViewById(R.id.deleteTask)
-
+        getUserEmail()
         return view
     }
 
@@ -80,28 +87,104 @@ class TaskSettingsFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val selectedStatus = (position + 1).toString()
                 statusSpinner.setBackgroundColor(getStatusColorClass(selectedStatus))
+                updateTaskField("allapot_id", selectedStatus)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
-
 
         deleteTaskButton.setOnClickListener {
             taskId?.let {
                 showDeleteConfirmationDialog(it)
             } ?: Toast.makeText(requireContext(), "Feladat ID nem található!", Toast.LENGTH_SHORT).show()
         }
+        taskNameEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                val newTaskName = taskNameEditText.text?.toString() ?: ""
+                if (newTaskName != originalTaskName) {
+                    updateTaskField("feladat_nev", newTaskName)
+                    originalTaskName = newTaskName
+                    titleTextView.text = "${newTaskName} feladat beállításai"
+                }
+            }
+        }
+        dateEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                val newDate = dateEditText.text?.toString() ?: ""
+                if (newDate != originalDate) {
+                    if (!isValidDate(newDate)) {
+                        Toast.makeText(requireContext(), "Hibás dátum formátum! A dátumnak YYYY-MM-DD formátumban kell lennie.", Toast.LENGTH_SHORT).show()
+                        dateEditText.setText("")
+                    } else {
+                        updateDeadlineIfChanged()
+                    }
+                }
+            }
+        }
+
+        timeEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                val newTime = timeEditText.text?.toString() ?: ""
+                if (newTime != originalTime) {
+                    if (!isValidTime(newTime)) {
+                        Toast.makeText(requireContext(), "Hibás idő formátum! Az időnek HH:MM:SS formátumban kell lennie.", Toast.LENGTH_SHORT).show()
+                        timeEditText.setText("")
+                    } else {
+                        updateDeadlineIfChanged()
+                    }
+                }
+            }
+        }
+
+    }
+
+    private fun isValidDate(date: String): Boolean {
+        val datePattern = Regex("^\\d{4}-\\d{2}-\\d{2}\$")
+        return date.matches(datePattern)
+    }
+
+    private fun isValidTime(time: String): Boolean {
+        val timePattern = Regex("^\\d{2}:\\d{2}:\\d{2}\$")
+        return time.matches(timePattern)
+    }
+
+    private fun updateDeadlineIfChanged() {
+        val newDate = dateEditText.text?.toString() ?: ""
+        val newTime = timeEditText.text?.toString() ?: ""
+
+        if (newDate.isNotBlank() && newTime.isNotBlank()) {
+            if (!isValidDate(newDate)) {
+                Toast.makeText(requireContext(), "Hibás dátum formátum! A dátumnak YYYY-MM-DD formátumban kell lennie.", Toast.LENGTH_SHORT).show()
+                dateEditText.setText("")
+                return
+            }
+            if (!isValidTime(newTime)) {
+                Toast.makeText(requireContext(), "Hibás idő formátum! Az időnek HH:MM:SS formátumban kell lennie.", Toast.LENGTH_SHORT).show()
+                timeEditText.setText("")
+                return
+            }
+            if (newDate != originalDate || newTime != originalTime) {
+                updateTaskField("feladat_hatarido", "$newDate $newTime")
+                originalDate = newDate
+                originalTime = newTime
+            }
+        }
     }
 
     private fun updateTaskDetails(taskDetails: TaskDetails) {
-        taskNameEditText.setText(taskDetails.feladat_nev)
-        titleTextView.text = "${taskDetails.feladat_nev} feladat beállításai"
+        originalTaskName = taskDetails.feladat_nev
+        taskNameEditText.setText(originalTaskName)
+        titleTextView.text = "${originalTaskName} feladat beállításai"
 
         val dateTimeParts = taskDetails.feladat_hatarido?.split(" ") ?: listOf("", "")
         if (dateTimeParts.size == 2) {
-            dateEditText.setText(dateTimeParts[0])
-            timeEditText.setText(dateTimeParts[1])
-        }else {
+            originalDate = dateTimeParts[0]
+            originalTime = dateTimeParts[1]
+            dateEditText.setText(originalDate)
+            timeEditText.setText(originalTime)
+        } else {
+            originalDate = ""
+            originalTime = ""
             dateEditText.setText("")
             timeEditText.setText("")
         }
@@ -111,6 +194,47 @@ class TaskSettingsFragment : Fragment() {
         statusSpinner.setSelection(taskDetails.allapot_id - 1)
 
         statusSpinner.setBackgroundColor(getStatusColorClass(taskDetails.allapot_id.toString()))
+    }
+
+    private fun getUserEmail() {
+        val authToken = RetrofitClient.getCookieJar().getAuthToken()
+        if (authToken != null) {
+            val email = JwtUtils.decodeJwt(authToken)
+            if (email != null) {
+                userEmail = email
+            } else {
+                Toast.makeText(requireContext(), "Hiba: Nem sikerült dekódolni az e-mailt.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun updateTaskField(field: String, value: String) {
+        val request = UpdateTaskRequest(
+            feladat_id = taskId ?: return,
+            mezo = field,
+            uj_ertek = value,
+            felhasznalo_email = userEmail ?: return
+        )
+
+        RetrofitClient.taskService.updateTask(request).enqueue(object : Callback<UpdateTaskResponse> {
+            override fun onResponse(call: Call<UpdateTaskResponse>, response: Response<UpdateTaskResponse>) {
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    if (result?.success != null) {
+                        Toast.makeText(requireContext(), "Sikeres módosítás!", Toast.LENGTH_SHORT).show()
+
+                    } else {
+                        Toast.makeText(requireContext(), result?.error ?: "Ismeretlen hiba", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "Szerver válasz sikertelen!", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<UpdateTaskResponse>, t: Throwable) {
+                Toast.makeText(requireContext(), "Hálózati hiba!", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun showDeleteConfirmationDialog(taskId: Int) {

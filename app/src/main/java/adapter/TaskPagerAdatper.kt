@@ -25,6 +25,7 @@ class TaskPagerAdapter(activity: FragmentActivity, private val taskDetails: Task
             1 -> TaskDescriptionFragment().apply {
                 val bundle = Bundle().apply {
                     putString("TASK_DESCRIPTION", taskDetails?.feladat_leiras)
+                    putInt("TASK_ID", taskDetails?.feladat_id ?: -1)
                 }
                 arguments = bundle
             }
@@ -45,5 +46,3 @@ class TaskPagerAdapter(activity: FragmentActivity, private val taskDetails: Task
         }
     }
 }
-
-
