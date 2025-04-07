@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dodolist.R
+import com.example.dodolist.utils.getStatusColorClass
+import com.example.dodolist.utils.getStatusLabel
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -15,8 +17,7 @@ class TaskAdapter(private var tasks: List<Task>, private val onItemClick: (Task)
     class TaskViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val taskTitleTextView: TextView = view.findViewById(R.id.taskTitleTextView)
         val deadlineTextView: TextView = view.findViewById(R.id.deadlineTextView)
-        val subTaskTextView: TextView = view.findViewById(R.id.subTaskTextView)
-        val collaboratorsTextView: TextView = view.findViewById(R.id.collaboratorsTextView)
+        val statusBadge: TextView = view.findViewById(R.id.statusBadge)
 
 
     }
@@ -30,6 +31,9 @@ class TaskAdapter(private var tasks: List<Task>, private val onItemClick: (Task)
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val task = tasks[position]
         holder.taskTitleTextView.text = task.feladat_nev
+        holder.statusBadge.text = getStatusLabel(task.allapot_id.toString())
+        holder.statusBadge.setBackgroundColor(getStatusColorClass(task.allapot_id.toString()))
+
         val feladatHatarido = task.feladat_hatarido
 
         holder.deadlineTextView.text = if (feladatHatarido == "0000-00-00 00:00:00") {
@@ -44,9 +48,8 @@ class TaskAdapter(private var tasks: List<Task>, private val onItemClick: (Task)
                 "Határidő: -"
             }
         }
-        holder.subTaskTextView.text = "Alfeladatok száma: ${task.subTaskCount}"
-        holder.collaboratorsTextView.text = "Megosztva: ${task.collaborators}"
         holder.itemView.setOnClickListener { onItemClick(task) }
+
     }
 
     override fun getItemCount(): Int = tasks.size

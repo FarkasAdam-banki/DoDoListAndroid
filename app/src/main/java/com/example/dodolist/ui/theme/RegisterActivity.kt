@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dodolist.model.RegisterData
@@ -25,6 +26,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var passwordInput: EditText
     private lateinit var secondPasswordInput: EditText
     private lateinit var registerButton: Button
+    private lateinit var loginText: TextView
 
     private val apiBaseUrl = "https://dodolist.hu/"
     private val apiService: RegisterService by lazy {
@@ -44,6 +46,7 @@ class RegisterActivity : AppCompatActivity() {
         passwordInput = findViewById(R.id.passwordInput)
         secondPasswordInput = findViewById(R.id.secondPasswordInput)
         registerButton = findViewById(R.id.registerButton)
+        loginText = findViewById(R.id.loginText)
 
         registerButton.setOnClickListener {
             val username = usernameInput.text.toString().trim()
@@ -56,6 +59,10 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             register(username, email, password, password2)
+        }
+        loginText.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 

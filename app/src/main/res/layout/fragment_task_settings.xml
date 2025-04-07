@@ -2,6 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/dodobg"
+    android:padding="20dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
@@ -12,6 +14,8 @@
         android:text="feladat beállítása"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="@color/black"
+
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="16dp"/>
@@ -21,6 +25,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Feladat neve"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:backgroundTint="@color/black"
         app:layout_constraintTop_toBottomOf="@id/titleTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,6 +36,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textInputEditText"
             android:layout_width="match_parent"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/black"
             android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -37,6 +46,9 @@
         android:id="@+id/dateTimeInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
+
+        android:backgroundTint="@color/black"
         app:layout_constraintTop_toBottomOf="@id/textInputLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,6 +60,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Dátum"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@id/timeInputLayout"
@@ -56,6 +71,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/dateInputEditText"
                 android:layout_width="match_parent"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/black"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -64,6 +81,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Idő"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/black"
             app:layout_constraintStart_toEndOf="@id/dateInputLayout"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
@@ -71,6 +91,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/timeInputEditText"
                 android:layout_width="match_parent"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/black"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,6 +106,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:spinnerMode="dropdown"
+        android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/dateTimeInputLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -91,6 +114,8 @@
         android:id="@+id/shareLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/black"
         android:text="Megosztva:"
         android:textStyle="bold"
         android:textSize="16sp"
@@ -102,6 +127,8 @@
         android:id="@+id/tagsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/black"
         android:text="Tagek: +"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/shareLabel"
