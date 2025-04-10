@@ -39,6 +39,10 @@ object RetrofitClient {
         retrofit.create(InvitationService::class.java)
     }
 
+    val subtaskService: SubtaskService by lazy {
+        retrofit.create(SubtaskService::class.java)
+    }
+
     fun getCookieJar(): CustomCookieJar {
         return cookieJar
     }
