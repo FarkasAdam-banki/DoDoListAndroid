@@ -35,6 +35,7 @@
             android:background="@drawable/spinner_background"
             android:paddingHorizontal="8dp"
             android:spinnerMode="dropdown"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/subtaskTitleTextView"
             app:layout_constraintBottom_toBottomOf="@id/subtaskTitleTextView" />
@@ -49,21 +50,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/subtaskTitleTextView" />
 
-        <EditText
-            android:id="@+id/descriptionInputEditText"
-            android:layout_width="0dp"
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@android:color/transparent"
-            android:gravity="top"
-            android:hint="Feladat leírása"
-            android:inputType="textMultiLine"
-            android:minHeight="80dp"
-            android:padding="8dp"
-            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider" />
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintBottom_toTopOf="@id/deleteTask"
+            android:layout_marginTop="10dp"
+            android:hint="Feladat leírása"
+            tools:ignore="MissingConstraints">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/descriptionInputEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="120dp"
+                android:gravity="top"
+                android:inputType="textMultiLine"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/deleteTask"

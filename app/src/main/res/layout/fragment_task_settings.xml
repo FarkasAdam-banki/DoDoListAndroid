@@ -107,33 +107,10 @@
         android:layout_marginTop="16dp"
         android:spinnerMode="dropdown"
         android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/dateTimeInputLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
-    <TextView
-        android:id="@+id/shareLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:backgroundTint="@color/black"
-        android:text="Megosztva:"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/statusSpinner"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="16dp"/>
-
-    <TextView
-        android:id="@+id/tagsLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:backgroundTint="@color/black"
-        android:text="Tagek: +"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/shareLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="8dp"/>
 
     <TextView
         android:id="@+id/deleteTask"
