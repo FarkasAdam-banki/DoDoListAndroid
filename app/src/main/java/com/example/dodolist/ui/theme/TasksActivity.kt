@@ -1,9 +1,7 @@
 package com.example.dodolist.ui.theme
 import InvitationAdapter
 import Model.Invitation
-import Model.InvitationListResponse
 import Model.InvitationRequest
-import Model.InvitationResponse
 import Model.Task
 import TaskAdapter
 import TaskService
@@ -13,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,8 +24,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import com.example.dodolist.R
 import com.example.dodolist.network.RetrofitClient
-import com.example.dodolist.network.RetrofitClient.invitationService
-import com.example.dodolist.ui.theme.JwtUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineScope
@@ -43,6 +40,7 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
     private lateinit var launcher: ActivityResultLauncher<Intent>
     private lateinit var invitationAdapter: InvitationAdapter
     private lateinit var recyclerViewInvitations: RecyclerView
+    private lateinit var menu_icon: ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +63,11 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
         val fabAdd: FloatingActionButton = findViewById(R.id.fab_add)
         fabAdd.setOnClickListener {
             showAddTaskDialog()
+        }
+        menu_icon = findViewById(R.id.menu_icon)
+        menu_icon.setOnClickListener {
+            val intent = Intent(this, MenuActivity::class.java)
+            startActivity(intent)
         }
 
         recyclerView = findViewById(R.id.recyclerView)
