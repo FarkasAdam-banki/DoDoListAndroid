@@ -12,6 +12,7 @@ object RetrofitClient {
 
     private val client = OkHttpClient.Builder()
         .cookieJar(cookieJar)
+        .addInterceptor(AuthInterceptor(cookieJar))
         .build()
 
     private val retrofit: Retrofit by lazy {
@@ -45,6 +46,10 @@ object RetrofitClient {
     val profileService: ProfileService by lazy {
         retrofit.create(ProfileService::class.java)
     }
+    val registerService: RegisterService by lazy {
+        retrofit.create(RegisterService::class.java)
+    }
+
 
 
     fun getCookieJar(): CustomCookieJar {

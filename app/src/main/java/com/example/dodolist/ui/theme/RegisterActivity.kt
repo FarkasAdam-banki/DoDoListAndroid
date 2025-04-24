@@ -28,14 +28,8 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var registerButton: Button
     private lateinit var loginText: TextView
 
-    private val apiBaseUrl = "https://dodolist.hu/"
-    private val apiService: RegisterService by lazy {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(apiBaseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        retrofit.create(RegisterService::class.java)
-    }
+    private val apiService: RegisterService = com.example.dodolist.network.RetrofitClient.registerService
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

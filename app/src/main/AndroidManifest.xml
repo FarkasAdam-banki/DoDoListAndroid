@@ -24,6 +24,13 @@
             android:name=".ui.theme.RegisterActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.theme.MenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.theme.ProfileSettingsActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>

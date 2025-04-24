@@ -83,25 +83,10 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .create()
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://dodolist.hu/")
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build()
+        taskService = RetrofitClient.taskService
 
 
-        taskService = retrofit.create(TaskService::class.java)
 
-        val authToken = RetrofitClient.getCookieJar().getAuthToken()
-        if (authToken != null) {
-            var email = JwtUtils.decodeJwt(authToken)
-            if (email != null) {
-                fetchTasks(email)
-            } else {
-                Log.e("JWT", "Nem sikerült dekódolni az emailt.")
-            }
-        } else {
-            Log.e("JWT", "Nincs auth_token a sütiben.")
-        }
 
         recyclerViewInvitations = findViewById(R.id.recyclerViewInvitations)
         recyclerViewInvitations.layoutManager = LinearLayoutManager(this)
@@ -115,6 +100,21 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
         fetchInvitations()
 
 
+    }
+    override fun onResume() {
+        super.onResume()
+
+        val authToken = RetrofitClient.getCookieJar().getAuthToken()
+        if (authToken != null) {
+            val email = JwtUtils.decodeJwt(authToken)
+            if (email != null) {
+                fetchTasks(email)
+            } else {
+                Log.e("JWT", "Nem sikerült dekódolni az emailt.")
+            }
+        } else {
+            Log.e("JWT", "Nincs auth_token a sütiben.")
+        }
     }
     private fun fetchInvitations() {
         val authToken = RetrofitClient.getCookieJar().getAuthToken()
