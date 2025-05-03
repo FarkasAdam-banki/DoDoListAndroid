@@ -8,13 +8,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.dodolist.R
 import com.example.dodolist.adapter.SubtaskAdapter
 import com.example.dodolist.adapter.SubtaskUpdateListener
 import com.example.dodolist.databinding.FragmentSubtasksBinding
 import com.example.dodolist.model.Subtask
 import com.example.dodolist.network.RetrofitClient
-import com.example.dodolist.ui.theme.JwtUtils
+import utils.JwtUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 
@@ -74,6 +73,15 @@ class SubTasksFragment : Fragment(), SubtaskUpdateListener {
     }
 
     override fun onSubtaskUpdate(subtask: Subtask) {
+        if (!isSubtaskNameValid(subtask.alfeladat_nev)) {
+            Toast.makeText(requireContext(), "Az alfeladat neve 1-30 karakter hosszú lehet", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (!isSubtaskDescriptionValid(subtask.alfeladat_leiras)) {
+            Toast.makeText(requireContext(), "Az alfeladat leírás legfeljebb 500 karakter lehet", Toast.LENGTH_SHORT).show()
+            return
+        }
         lifecycleScope.launch {
             try {
                 val updateMap = mapOf(
@@ -92,6 +100,14 @@ class SubTasksFragment : Fragment(), SubtaskUpdateListener {
             }
         }
     }
+    private fun isSubtaskNameValid(name: String): Boolean {
+        return Regex("^.{1,30}$").matches(name)
+    }
+
+    private fun isSubtaskDescriptionValid(desc: String): Boolean {
+        return Regex("^.{0,500}$").matches(desc)
+    }
+
 
     fun deleteSubtask(subtaskId: String) {
         lifecycleScope.launch {

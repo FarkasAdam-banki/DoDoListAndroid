@@ -6,23 +6,23 @@ import retrofit2.http.*
 
 interface SubtaskService {
 
-    @GET("dodo/subtask.php")
+    @GET("api/subtask/")
     suspend fun getSubtasks(
         @Query("feladat_id") taskId: String,
         @Query("felhasznalo_email") email: String
     ): List<Subtask>
 
-    @POST("dodo/subtask.php")
+    @POST("api/subtask/")
     suspend fun createSubtask(
         @Body body: Map<String, String>
     ): Response<Unit>
 
-    @PUT("dodo/subtask.php")
+    @PUT("api/subtask/")
     suspend fun updateSubtask(
         @Body body: Map<String, String>
     ): Response<Unit>
 
-    @HTTP(method = "DELETE", path = "dodo/subtask.php", hasBody = true)
+    @HTTP(method = "DELETE", path = "api/subtask/", hasBody = true)
     suspend fun deleteSubtask(
         @Body body: Map<String, String>
     ): Response<Unit>

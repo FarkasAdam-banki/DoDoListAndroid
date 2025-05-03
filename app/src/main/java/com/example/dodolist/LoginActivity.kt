@@ -12,14 +12,14 @@ import com.example.dodolist.R
 import com.example.dodolist.model.LoginData
 import com.example.dodolist.model.LoginResponse
 import com.example.dodolist.network.RetrofitClient
-import com.example.dodolist.ui.theme.RegisterActivity
-import com.example.dodolist.ui.theme.JwtUtils
-import com.example.dodolist.ui.theme.TasksActivity
+import com.example.dodolist.RegisterActivity
+import utils.JwtUtils
+import com.example.dodolist.TasksActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
     private lateinit var usernameInput: EditText
     private lateinit var passwordInput: EditText
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_login)
 
         usernameInput = findViewById(R.id.usernameInput)
         passwordInput = findViewById(R.id.passwordInput)
@@ -60,9 +60,9 @@ class MainActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val loginResponse = response.body()
                     if (loginResponse?.error != null) {
-                        Toast.makeText(this@MainActivity, loginResponse.error, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@LoginActivity, loginResponse.error, Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(this@MainActivity, "Sikeres bejelentkezés!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@LoginActivity, "Sikeres bejelentkezés!", Toast.LENGTH_SHORT).show()
 
                         val authToken = RetrofitClient.getCookieJar().getAuthToken()
                         if (authToken != null) {
@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
                             if (email == null) {
                                 Log.e("JWT", "Nem sikerült dekódolni az emailt.")
                             }else{
-                                val intent = Intent(this@MainActivity, TasksActivity::class.java)
+                                val intent = Intent(this@LoginActivity, TasksActivity::class.java)
                                 startActivity(intent)
 
                             }
@@ -79,13 +79,13 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 } else {
-                    Toast.makeText(this@MainActivity, "Hiba történt a bejelentkezés során", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, "Hiba történt a bejelentkezés során", Toast.LENGTH_SHORT).show()
                     Log.e("LoginActivity", "Hibás válasz: ${response.code()}")
                 }
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "Hálózati hiba: ${t.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginActivity, "Hálózati hiba: ${t.message}", Toast.LENGTH_SHORT).show()
                 Log.e("LoginActivity", "Hiba a hálózati kérés során: ${t.message}")
             }
         })

@@ -1,4 +1,4 @@
-package com.example.dodolist.ui.theme
+package com.example.dodolist
 import InvitationAdapter
 import Model.Invitation
 import Model.InvitationRequest
@@ -22,15 +22,13 @@ import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.example.dodolist.R
 import com.example.dodolist.network.RetrofitClient
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import utils.JwtUtils
 
 class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedListener {
 
@@ -183,7 +181,9 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
             }
         }
     }
-
+    private fun isValidTaskName(name: String): Boolean {
+        return Regex("^.{1,30}$").matches(name)
+    }
 
     private fun showAddTaskDialog() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_task, null)
@@ -195,6 +195,13 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
             .create()
 
         buttonCreateTask.setOnClickListener {
+            if (!isValidTaskName(editTextTaskName.text.toString())) {
+                Toast.makeText(
+                    this,
+                    "A feladat neve 1-30 karakter hosszú lehet",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }else{
             val taskName = editTextTaskName.text.toString().trim()
             if (taskName.isNotEmpty()) {
                 val authToken = RetrofitClient.getCookieJar().getAuthToken()
@@ -203,7 +210,11 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
                     if (email != null) {
                         createTask(taskName, email, dialog)
                     } else {
-                        Toast.makeText(this, "Hiba: Nem sikerült dekódolni az e-mailt.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this,
+                            "Hiba: Nem sikerült dekódolni az e-mailt.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 } else {
                     Toast.makeText(this, "Hiba: Nincs auth token.", Toast.LENGTH_SHORT).show()
@@ -211,6 +222,7 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
             } else {
                 Toast.makeText(this, "Adj meg egy feladatnevet!", Toast.LENGTH_SHORT).show()
             }
+        }
         }
 
         dialog.show()

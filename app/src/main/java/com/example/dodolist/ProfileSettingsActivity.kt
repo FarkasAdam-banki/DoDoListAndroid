@@ -1,4 +1,4 @@
-package com.example.dodolist.ui.theme
+package com.example.dodolist
 
 import Model.UpdatePasswordRequest
 import Model.UpdatePasswordResponse
@@ -12,12 +12,11 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
-import com.example.dodolist.R
 import com.example.dodolist.network.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import utils.JwtUtils
 
 class ProfileSettingsActivity : AppCompatActivity() {
 
@@ -56,6 +55,10 @@ class ProfileSettingsActivity : AppCompatActivity() {
             val username = etUsername.text.toString().trim()
             if (username.isEmpty()) {
                 etUsername.error = "Felhasználónév nem lehet üres"
+                return@setOnClickListener
+            }
+            if (!isUsernameValid(username)) {
+                etUsername.error = "A felhasználónév csak betűket, számokat és aláhúzásjeleket tartalmazhat (3-25 karakter)."
                 return@setOnClickListener
             }
             updateUsername(username)
@@ -104,6 +107,10 @@ class ProfileSettingsActivity : AppCompatActivity() {
             }
         }
     }
+    private fun isUsernameValid(username: String): Boolean {
+        return Regex("^[a-zA-Z0-9_]{3,25}$").matches(username)
+    }
+
 
     private fun updateUsername(username: String) {
         val request = UpdateUsernameRequest(

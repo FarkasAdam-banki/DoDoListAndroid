@@ -1,8 +1,9 @@
-package com.example.dodolist.ui.theme
+package com.example.dodolist
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -11,13 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.dodolist.model.RegisterData
 import com.example.dodolist.model.RegisterResponse
 import com.example.dodolist.network.RegisterService
-import com.example.dodolist.R
-import com.example.dodolist.ui.MainActivity
+import com.example.dodolist.network.RetrofitClient
+import com.example.dodolist.ui.LoginActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -28,7 +27,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var registerButton: Button
     private lateinit var loginText: TextView
 
-    private val apiService: RegisterService = com.example.dodolist.network.RetrofitClient.registerService
+    private val apiService: RegisterService = RetrofitClient.registerService
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +54,7 @@ class RegisterActivity : AppCompatActivity() {
             register(username, email, password, password2)
         }
         loginText.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
     }
@@ -66,13 +65,13 @@ class RegisterActivity : AppCompatActivity() {
             return false
         }
 
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             showToast("Érvénytelen email cím.")
             return false
         }
 
-        if (!username.matches(Regex("^[a-zA-Z0-9_]{3,20}$"))) {
-            showToast("A felhasználónév 3-20 karakter hosszú lehet, és csak betűket, számokat vagy aláhúzást tartalmazhat.")
+        if (!username.matches(Regex("^[a-zA-Z0-9_]{3,25}$"))) {
+            showToast("A felhasználónév 3-25 karakter hosszú lehet, és csak betűket, számokat vagy aláhúzást tartalmazhat.")
             return false
         }
 
@@ -105,7 +104,7 @@ class RegisterActivity : AppCompatActivity() {
                             showToast(registerResponse.error)
                         } else {
                             showToast(registerResponse.message ?: "Sikeres regisztráció!")
-                            val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                            val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
                             startActivity(intent)
                             finish()
                         }

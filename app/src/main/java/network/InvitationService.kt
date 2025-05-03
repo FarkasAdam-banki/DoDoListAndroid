@@ -13,21 +13,21 @@ import retrofit2.http.Query
 
 interface InvitationService {
 
-    @POST("dodo/invitation.php")
+    @POST("api/invitation/")
     suspend fun inviteUser(@Body request: InvitationRequest): Response<InvitationResponse>
 
-    @POST("dodo/invitation.php")
+    @POST("api/invitation/")
     suspend fun removeUser(@Body request: InvitationRequest): Response<InvitationResponse>
 
-    @POST("dodo/invitation.php")
+    @POST("api/invitation/")
     suspend fun getUsers(@Body request: InvitationRequest): Response<InvitationResponse>
 
-    @GET("dodo/check_invites.php")
+    @GET("api/check_invites/")
     fun checkInvites(@Query("email") email: String): Call<List<Invitation>>
 
-    @POST("dodo/invitation.php")
+    @POST("api/invitation/")
     suspend fun acceptInvite(@Body request: InvitationRequest): Response<InvitationResponse>
 
-    @POST("dodo/invitation.php")
+    @POST("api/invitation/")
     suspend fun rejectInvite(@Body request: InvitationRequest): Response<InvitationResponse>
 }

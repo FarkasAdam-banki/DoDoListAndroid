@@ -1,7 +1,6 @@
 package com.example.dodolist.ui.fragments
 
 import Model.ApiResponse
-import Model.LogEntry
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater

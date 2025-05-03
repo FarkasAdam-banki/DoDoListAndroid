@@ -15,23 +15,23 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
-            android:name=".ui.theme.TasksActivity"
+            android:name=".TasksActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.theme.TaskSettingsActivity"
+            android:name=".TaskSettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.theme.RegisterActivity"
+            android:name=".RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.theme.MenuActivity"
+            android:name=".MenuActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.theme.ProfileSettingsActivity"
+            android:name=".ProfileSettingsActivity"
             android:exported="false" />
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

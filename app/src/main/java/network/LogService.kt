@@ -8,6 +8,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface LogService {
-    @GET("dodo/log.php")
+    @GET("api/log/")
     fun getLogsForTask(@Query("feladat_id") taskId: Int): Call<ApiResponse>
 }

@@ -2,7 +2,6 @@ package com.example.dodolist.ui.fragments
 
 
 import Model.InvitationRequest
-import Model.InvitationResponse
 import Model.UserItem
 import adapter.ShareAdapter
 import android.os.Bundle
@@ -17,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dodolist.R
 import com.example.dodolist.network.RetrofitClient
-import com.example.dodolist.ui.theme.JwtUtils
+import utils.JwtUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

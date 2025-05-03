@@ -10,9 +10,9 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface ProfileService {
-    @POST("/dodo/updateUserDatas.php")
+    @POST("/api/updateUserDatas/")
     fun updateUsername(@Body request: UpdateUsernameRequest): Call<UpdateUsernameResponse>
 
-    @POST("/dodo/updateUserDatas.php")
+    @POST("/api/updateUserDatas/")
     fun updatePassword(@Body request: UpdatePasswordRequest): Call<UpdatePasswordResponse>
 }

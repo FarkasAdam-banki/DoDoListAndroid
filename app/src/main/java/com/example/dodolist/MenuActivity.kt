@@ -1,19 +1,15 @@
-package com.example.dodolist.ui.theme
+package com.example.dodolist
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.RecyclerView
-import com.example.dodolist.R
+import androidx.cardview.widget.CardView
 
 class MenuActivity : AppCompatActivity() {
 
-    private lateinit var menuFeladatok: LinearLayout
-    private lateinit var menuBeallitasok: LinearLayout
+    private lateinit var menuFeladatok: CardView
+    private lateinit var menuBeallitasok: CardView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

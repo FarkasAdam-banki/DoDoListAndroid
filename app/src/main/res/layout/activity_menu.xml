@@ -5,18 +5,17 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#326075"
-    tools:context=".ui.theme.MenuActivity">
+    android:background="#5c9db5"
+    tools:context=".MenuActivity">
 
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_margin="16dp"
         android:text="FELADATAIM"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
+        android:textColor="#1A1A1A"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,61 +23,79 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle">
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:id="@+id/menuFeladatok"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp"
+            android:layout_margin="12dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackground">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp"
+            app:cardBackgroundColor="#FFFFFF">
 
-            <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@android:drawable/ic_menu_agenda"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="Feladatok"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:padding="20dp"
+                android:gravity="center_vertical">
 
-        <LinearLayout
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@android:drawable/ic_menu_agenda" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Feladatok"
+                    android:textColor="#1A1A1A"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
             android:id="@+id/menuBeallitasok"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp"
+            android:layout_margin="12dp"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackground">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp"
+            app:cardBackgroundColor="#FFFFFF">
 
-            <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@android:drawable/ic_menu_manage"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="Beállítások"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:padding="20dp"
+                android:gravity="center_vertical">
 
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@android:drawable/ic_menu_manage"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Beállítások"
+                    android:textColor="#1A1A1A"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

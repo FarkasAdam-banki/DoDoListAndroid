@@ -1,6 +1,5 @@
 package com.example.dodolist.ui.fragments
 
-import Model.TaskDetails
 import Model.UpdateTaskRequest
 import Model.UpdateTaskResponse
 import android.os.Bundle
@@ -11,7 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.dodolist.R
 import com.example.dodolist.network.RetrofitClient
-import com.example.dodolist.ui.theme.JwtUtils
+import utils.JwtUtils
 import com.google.android.material.textfield.TextInputEditText
 import retrofit2.Call
 import retrofit2.Callback
@@ -83,7 +82,7 @@ class TaskDescriptionFragment : Fragment() {
     }
 
     private fun validateDescription(description: String): Boolean {
-        return description.isNotBlank() && description.length <= 2000
+        return description.length <= 2000
     }
 
     private fun onDescriptionChange() {

@@ -1,4 +1,4 @@
-package com.example.dodolist.ui.theme
+package utils
 
 import android.util.Base64
 import org.json.JSONObject

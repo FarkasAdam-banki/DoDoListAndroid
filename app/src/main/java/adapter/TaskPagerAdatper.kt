@@ -9,7 +9,7 @@ import com.example.dodolist.ui.fragments.LogFragment
 import com.example.dodolist.ui.fragments.ShareFragment
 import com.example.dodolist.ui.fragments.SubTasksFragment
 import com.example.dodolist.ui.fragments.TaskDescriptionFragment
-import com.example.dodolist.ui.theme.TaskSettingsFragment
+import com.example.dodolist.TaskSettingsFragment
 
 class TaskPagerAdapter(activity: FragmentActivity, private val taskDetails: TaskDetails?) : FragmentStateAdapter(activity) {
     override fun getItemCount(): Int = 5

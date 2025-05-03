@@ -1,4 +1,4 @@
-package com.example.dodolist.ui.theme
+package com.example.dodolist
 
 import Model.TaskDetails
 import TaskService
@@ -9,7 +9,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
-import com.example.dodolist.R
 import com.example.dodolist.network.RetrofitClient
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator

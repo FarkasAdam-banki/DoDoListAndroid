@@ -8,6 +8,6 @@ import retrofit2.http.POST
 
 interface LoginService {
 
-    @POST("dodo/login.php")
+    @POST("api/login/")
     fun login(@Body loginData: LoginData): Call<LoginResponse>
 }

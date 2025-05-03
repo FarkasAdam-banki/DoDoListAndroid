@@ -1,4 +1,4 @@
-package com.example.dodolist.ui.theme
+package com.example.dodolist
 
 import Model.DeleteTaskResponse
 import Model.TaskDetails
@@ -17,14 +17,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.dodolist.R
 import com.example.dodolist.network.RetrofitClient
 import com.example.dodolist.utils.getStatusColorClass
 import com.google.android.material.textfield.TextInputEditText
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
+import utils.JwtUtils
 
 
 class TaskSettingsFragment : Fragment() {
@@ -102,12 +101,18 @@ class TaskSettingsFragment : Fragment() {
             if (!hasFocus) {
                 val newTaskName = taskNameEditText.text?.toString() ?: ""
                 if (newTaskName != originalTaskName) {
-                    updateTaskField("feladat_nev", newTaskName)
-                    originalTaskName = newTaskName
-                    titleTextView.text = "${newTaskName} feladat beállításai"
+                    if (!isValidTaskName(newTaskName)) {
+                        Toast.makeText(requireContext(), "A feladat neve 1-30 karakter hosszú lehet", Toast.LENGTH_SHORT).show()
+                        taskNameEditText.setText(originalTaskName)
+                    } else {
+                        updateTaskField("feladat_nev", newTaskName)
+                        originalTaskName = newTaskName
+                        titleTextView.text = "${newTaskName} feladat beállításai"
+                    }
                 }
             }
         }
+
         dateEditText.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 val newDate = dateEditText.text?.toString() ?: ""
@@ -146,6 +151,9 @@ class TaskSettingsFragment : Fragment() {
     private fun isValidTime(time: String): Boolean {
         val timePattern = Regex("^\\d{2}:\\d{2}:\\d{2}\$")
         return time.matches(timePattern)
+    }
+    private fun isValidTaskName(name: String): Boolean {
+        return Regex("^.{1,30}$").matches(name)
     }
 
     private fun updateDeadlineIfChanged() {

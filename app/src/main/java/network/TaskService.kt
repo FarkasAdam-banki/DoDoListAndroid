@@ -13,18 +13,18 @@ import retrofit2.http.Query
 
 
 interface TaskService {
-    @GET("dodo/task.php")
+    @GET("api/task/")
     fun getTaskById(@Query("taskId") taskId: Int): Call<TaskDetails>
 
-    @GET("dodo/task.php")
+    @GET("api/task/")
     fun getUserTasks(@Query("userEmail") email: String): Call<List<Task>>
 
-    @POST("dodo/task.php")
+    @POST("api/task/")
     fun createTask(@Body taskData: Map<String, String>): Call<Void>
 
-    @DELETE("dodo/task.php")
+    @DELETE("api/task/")
     fun deleteTask(@Query("taskId") taskId: Int): Call<DeleteTaskResponse>
 
-    @PUT("dodo/task.php")
+    @PUT("api/task/")
     fun updateTask(@Body updateData: UpdateTaskRequest): Call<UpdateTaskResponse>
 }
