@@ -5,7 +5,6 @@ import TaskService
 import adapter.TaskPagerAdapter
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
@@ -64,7 +63,6 @@ class TaskSettingsActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDele
             }
 
             override fun onFailure(call: Call<TaskDetails>, t: Throwable) {
-                Log.e("TaskSettingsActivity", "API hiba: ${t.message}")
                 Toast.makeText(this@TaskSettingsActivity, "Nem sikerült lekérni az adatokat!", Toast.LENGTH_SHORT).show()
             }
         })

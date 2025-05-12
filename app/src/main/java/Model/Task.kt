@@ -1,6 +1,5 @@
 package Model
 
-import java.time.LocalDateTime
 
 data class Task(
     val feladat_id: Int,

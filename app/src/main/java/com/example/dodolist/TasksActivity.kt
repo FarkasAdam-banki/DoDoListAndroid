@@ -52,7 +52,6 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
             if (result.resultCode == RESULT_OK) {
                 val deletedId = result.data?.getIntExtra("DELETED_TASK_ID", -1) ?: -1
                 if (deletedId != -1) {
-                    Log.d("TasksActivity", "ActivityResult: taskId = $deletedId")
                     onTaskDeleted(deletedId)
                 }
             }
@@ -108,10 +107,10 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
             if (email != null) {
                 fetchTasks(email)
             } else {
-                Log.e("JWT", "Nem sikerült dekódolni az emailt.")
+                Toast.makeText(this, "Nem sikerült dekódolni az emailt.", Toast.LENGTH_SHORT).show()
             }
         } else {
-            Log.e("JWT", "Nincs auth_token a sütiben.")
+            Toast.makeText(this, "Autentikációs hiba", Toast.LENGTH_SHORT).show()
         }
     }
     private fun fetchInvitations() {
@@ -131,8 +130,6 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
                                 runOnUiThread {
                                     invitationAdapter.updateInvites(invites ?: emptyList())
                                 }
-                            } else {
-                                Log.e("Invitations", "Hibás válasz: ${response.code()}")
                             }
                         }
 
@@ -140,11 +137,7 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
                             Log.e("Invitations", "Hálózati hiba: ${t.message}")
                         }
                     })
-            } else {
-                Log.e("JWT", "Nem sikerült dekódolni az emailt.")
             }
-        } else {
-            Log.e("JWT", "Nincs auth_token a sütiben.")
         }
     }
 
@@ -155,7 +148,6 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
         val authToken = RetrofitClient.getCookieJar().getAuthToken()
         val email = authToken?.let { JwtUtils.decodeJwt(it) }
         if (email == null) {
-            Log.e("InvitationAction", "Email nem található!")
             return
         }
         CoroutineScope(Dispatchers.IO).launch {
@@ -269,7 +261,6 @@ class TasksActivity : AppCompatActivity(),TaskSettingsFragment.OnTaskDeletedList
             }
 
             override fun onFailure(call: Call<List<Task>>, t: Throwable) {
-                Log.e("TaskActivity", "API hiba: ${t.message}")
                 Toast.makeText(this@TasksActivity, "Sikertelen kapcsolat!", Toast.LENGTH_SHORT).show()
             }
         })

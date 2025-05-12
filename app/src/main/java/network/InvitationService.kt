@@ -1,7 +1,6 @@
 package Network
 
 import Model.Invitation
-import Model.InvitationListResponse
 import Model.InvitationRequest
 import Model.InvitationResponse
 import retrofit2.Call

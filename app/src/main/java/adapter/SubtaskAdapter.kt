@@ -1,6 +1,5 @@
 package com.example.dodolist.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,15 +7,10 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.ImageButton
-import android.widget.Toast
-import androidx.core.text.set
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dodolist.R
 import com.example.dodolist.model.Subtask
-import com.example.dodolist.network.SubtaskService
 import com.example.dodolist.utils.getStatusColorClass
-import com.example.dodolist.utils.getStatusLabel
 
 
 interface SubtaskUpdateListener {
@@ -62,7 +56,7 @@ class SubtaskAdapter(
                     val newTitle = title.text.toString()
                     if (newTitle != subtask.alfeladat_nev) {
                         subtask.alfeladat_nev = newTitle
-                        updateListener.onSubtaskUpdate(subtask) // Módosítjuk mindkét adatot
+                        updateListener.onSubtaskUpdate(subtask)
                     }
                 }
             }
@@ -72,7 +66,7 @@ class SubtaskAdapter(
                     val newDesc = desc.text.toString()
                     if (newDesc != subtask.alfeladat_leiras) {
                         subtask.alfeladat_leiras = newDesc
-                        updateListener.onSubtaskUpdate(subtask) // Módosítjuk mindkét adatot
+                        updateListener.onSubtaskUpdate(subtask)
                     }
                 }
             }

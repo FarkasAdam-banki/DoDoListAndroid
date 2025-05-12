@@ -111,13 +111,11 @@ class RegisterActivity : AppCompatActivity() {
                     }
                 } else {
                     showToast("Hiba történt a regisztráció során")
-                    Log.e("RegisterActivity", "Hibás válasz: \${response.code()}")
                 }
             }
 
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
                 showToast("Hálózati hiba: \${t.message}")
-                Log.e("RegisterActivity", "Hiba a hálózati kérés során: \${t.message}")
             }
         })
     }

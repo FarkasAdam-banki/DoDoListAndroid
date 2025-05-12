@@ -144,7 +144,7 @@ class ShareFragment : Fragment() {
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "Hiba: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "Hiba kelektezett", Toast.LENGTH_LONG).show()
                 }
             }
         }
